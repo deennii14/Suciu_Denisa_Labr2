@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Suciu_Denisa_Labr2.Data;
 using Suciu_Denisa_Labr2.Models;
 
-namespace Suciu_Denisa_Labr2.Pages
+namespace Suciu_Denisa_Labr2.Pages.Books
 {
     public class CreateModel : PageModel
     {

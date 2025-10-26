@@ -8,17 +8,18 @@ using Microsoft.EntityFrameworkCore;
 using Suciu_Denisa_Labr2.Data;
 using Suciu_Denisa_Labr2.Models;
 
-namespace Suciu_Denisa_Labr2.Pages
+namespace Suciu_Denisa_Labr2.Pages.Books
 {
-    public class DetailsModel : PageModel
+    public class DeleteModel : PageModel
     {
-        private readonly Suciu_Denisa_Labr2.Data.Suciu_Denisa_Labr2Context _context;
+        private readonly Suciu_Denisa_Labr2Context _context;
 
-        public DetailsModel(Suciu_Denisa_Labr2.Data.Suciu_Denisa_Labr2Context context)
+        public DeleteModel(Suciu_Denisa_Labr2Context context)
         {
             _context = context;
         }
 
+        [BindProperty]
         public Book Book { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -29,6 +30,7 @@ namespace Suciu_Denisa_Labr2.Pages
             }
 
             var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
+
             if (book == null)
             {
                 return NotFound();
@@ -38,6 +40,24 @@ namespace Suciu_Denisa_Labr2.Pages
                 Book = book;
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var book = await _context.Book.FindAsync(id);
+            if (book != null)
+            {
+                Book = book;
+                _context.Book.Remove(Book);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage("./Index");
         }
     }
 }

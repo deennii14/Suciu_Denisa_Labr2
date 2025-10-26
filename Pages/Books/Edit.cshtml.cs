@@ -9,13 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using Suciu_Denisa_Labr2.Data;
 using Suciu_Denisa_Labr2.Models;
 
-namespace Suciu_Denisa_Labr2.Pages
+namespace Suciu_Denisa_Labr2.Pages.Books
 {
     public class EditModel : PageModel
     {
-        private readonly Suciu_Denisa_Labr2.Data.Suciu_Denisa_Labr2Context _context;
+        private readonly Suciu_Denisa_Labr2Context _context;
 
-        public EditModel(Suciu_Denisa_Labr2.Data.Suciu_Denisa_Labr2Context context)
+        public EditModel(Suciu_Denisa_Labr2Context context)
         {
             _context = context;
         }
