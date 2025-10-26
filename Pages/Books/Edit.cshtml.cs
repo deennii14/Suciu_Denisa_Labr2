@@ -9,13 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using Suciu_Denisa_Labr2.Data;
 using Suciu_Denisa_Labr2.Models;
 
-namespace Suciu_Denisa_Labr2.Pages.Books
+namespace Suciu_Denisa_Labr2.Pages
 {
-    public class EditModel : PageModel
+    public class EditModel : BookCategoriesPageModel
     {
-        private readonly Suciu_Denisa_Labr2Context _context;
+        private readonly Suciu_Denisa_Labr2.Data.Suciu_Denisa_Labr2Context _context;
 
-        public EditModel(Suciu_Denisa_Labr2Context context)
+        public EditModel(Suciu_Denisa_Labr2.Data.Suciu_Denisa_Labr2Context context)
         {
             _context = context;
         }
@@ -29,6 +29,12 @@ namespace Suciu_Denisa_Labr2.Pages.Books
             {
                 return NotFound();
             }
+
+            Book = await _context.Book
+    .Include(b => b.Publisher)
+    .Include(b => b.BookCategories).ThenInclude(b => b.Category)
+ .AsNoTracking()
+ .FirstOrDefaultAsync(m => m.ID == id);
 
             var book =  await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
             if (book == null)
@@ -76,4 +82,68 @@ namespace Suciu_Denisa_Labr2.Pages.Books
             return _context.Book.Any(e => e.ID == id);
         }
     }
+}
+PopulateAssignedCategoryData(context, Book);
+
+void PopulateAssignedCategoryData(object context, Book book)
+{
+    throw new NotImplementedException();
+}
+
+void PopulateAssignedCategoryData(object context, Book book)
+{
+    throw new NotImplementedException();
+}
+
+void PopulateAssignedCategoryData(object context, Book book)
+{
+    throw new NotImplementedException();
+}
+
+var authorList = _context.Author.Select(x => new
+{
+    x.ID,
+    FullName = x.LastName + " " + x.FirstName
+});
+    ViewData["AuthorID"] = new SelectList(authorList, "ID", "FullName");
+    ViewData["PublisherID"] = new SelectList(_context.Publisher, "ID",
+    "PublisherName");
+return Page();
+ }
+
+ public async Task<IActionResult> OnPostAsync(int? id, string[]
+selectedCategories)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
+    //se va include Author conform cu sarcina de la lab 2
+    var bookToUpdate = await _context.Book
+        .Include(i => i.Publisher)
+        .Include(i => i.BookCategories)
+        .ThenInclude(i => i.Category)
+        .FirstOrDefaultAsync(s => s.ID == id);
+    if (bookToUpdate == null)
+    {
+        return NotFound();
+    }
+    //se va modifica AuthorID conform cu sarcina de la lab 2
+    if (await TryUpdateModelAsync<Book>(
+    bookToUpdate,
+    "Book",
+    i => i.Title, i => i.Author,
+    i => i.Price, i => i.PublishingDate, i => i.PublisherID))
+    {
+        UpdateBookCategories(_context, selectedCategories, bookToUpdate);
+        await _context.SaveChangesAsync();
+        return RedirectToPage("./Index");
+    }
+    //Apelam UpdateBookCategories pentru a aplica informatiile din checkboxuri la entitatea Books care
+    //este editata
+    UpdateBookCategories(_context, selectedCategories, bookToUpdate);
+    PopulateAssignedCategoryData(_context, bookToUpdate);
+    return Page();
+}
+ }
 }

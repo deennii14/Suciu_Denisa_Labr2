@@ -15,5 +15,6 @@ namespace Suciu_Denisa_Labr2.Data
         }
 
         public DbSet<Suciu_Denisa_Labr2.Models.Book> Book { get; set; } = default!;
+        public DbSet<Suciu_Denisa_Labr2.Models.Category> Category { get; set; } = default!;
     }
 }
