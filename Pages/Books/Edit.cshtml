@@ -1,11 +1,11 @@
 ﻿@page
-@model Suciu_Denisa_Labr2.Pages.CreateModel
+@model Suciu_Denisa_Labr2.Pages.Books.EditModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
 <h4>Book</h4>
 <hr />
@@ -13,6 +13,7 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Book.ID" />
             <div class="form-group">
                 <label asp-for="Book.Title" class="control-label"></label>
                 <input asp-for="Book.Title" class="form-control" />
@@ -35,20 +36,14 @@
                 <span asp-validation-for="Book.PublisherID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Book.PublishingDate" class="control-label"></label>
-                <input asp-for="Book.PublishingDate" class="form-control" />
-                <span asp-validation-for="Book.PublishingDate" class="textdanger">
-
-                </span>
-            </div>
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="./Index">Back to List</a>
 </div>
 
 @section Scripts {

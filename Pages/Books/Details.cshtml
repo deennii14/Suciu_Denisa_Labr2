@@ -1,13 +1,12 @@
 ﻿@page
-@model Suciu_Denisa_Labr2.Pages.DeleteModel
+@model Suciu_Denisa_Labr2.Pages.Books.DetailsModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Details";
 }
 
-<h1>Delete</h1>
+<h1>Details</h1>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Book</h4>
     <hr />
@@ -37,10 +36,8 @@
             @Html.DisplayFor(model => model.Book.PublishingDate)
         </dd>
     </dl>
-    
-    <form method="post">
-        <input type="hidden" asp-for="Book.ID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
-    </form>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Book.ID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
 </div>
