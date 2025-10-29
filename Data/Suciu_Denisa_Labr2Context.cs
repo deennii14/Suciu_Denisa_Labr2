@@ -15,6 +15,8 @@ namespace Suciu_Denisa_Labr2.Data
         public DbSet<BookCategory> BookCategory { get; set; }
         public DbSet<Author> Author { get; set; }
         public DbSet<Publisher> Publisher { get; set; }
+        public DbSet<Suciu_Denisa_Labr2.Models.Member> Member { get; set; } = default!;
+        public DbSet<Suciu_Denisa_Labr2.Models.Borrowing> Borrowing { get; set; } = default!;
 
 
     }

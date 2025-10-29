@@ -42,6 +42,7 @@
 @if (Model.CategoryData.Books != null)
 {
     <h3>Books in Selected Category</h3>
+
     <table class="table">
         <thead>
             <tr>
@@ -56,6 +57,42 @@
                     <td>@book.Title</td>
                     <td>@book.Author.FullName</td>
                 </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>Borrowings for Books in This Category</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Member</th>
+                <th>Book</th>
+                <th>Author</th>
+                <th>Return Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model.CategoryData.Books)
+            {
+                if (book.Borrowings != null)
+                {
+                    foreach (var borrowing in book.Borrowings)
+                    {
+                        <tr>
+                            <td>@borrowing.Member.FullName</td>
+                            <td>@borrowing.Book.Title</td>
+                            <td>@borrowing.Book.Author.FullName</td>
+                            <td>@borrowing.ReturnDate.ToShortDateString()</td>
+                            <td>
+                                <a asp-page="/Borrowings/Edit" asp-route-id="@borrowing.ID">Edit</a> |
+                                <a asp-page="/Borrowings/Details" asp-route-id="@borrowing.ID">Details</a> |
+                                <a asp-page="/Borrowings/Delete" asp-route-id="@borrowing.ID">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
             }
         </tbody>
     </table>
