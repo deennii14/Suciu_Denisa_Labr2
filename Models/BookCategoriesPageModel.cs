@@ -1,61 +1,62 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Suciu_Denisa_Labr2.Data;
+using Suciu_Denisa_Labr2.Models;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Suciu_Denisa_Labr2.Models;
-    public class BookCategoriesPageModel: PageModel
+namespace Suciu_Denisa_Labr2.Pages.Books
 {
-    public List<AssignedCategoryData> AssignedCategoryDataList;
-    public void PopulateAssignedCategoryData(Suciu_Denisa_Labr2Context context,
-    Book book)
+    public class BookCategoriesPageModel : PageModel
     {
-        var allCategories = context.Category;
-        var bookCategories = new HashSet<int>(
-        book.BookCategories.Select(c => c.CategoryID)); //
-        AssignedCategoryDataList = new List<AssignedCategoryData>();
-        foreach (var cat in allCategories)
+        public List<AssignedCategoryData> AssignedCategoryDataList;
+
+        public void PopulateAssignedCategoryData(Suciu_Denisa_Labr2Context context, Book book)
         {
-            AssignedCategoryDataList.Add(new AssignedCategoryData
+            var allCategories = context.Category;
+            var bookCategories = new HashSet<int>(book.BookCategories.Select(c => c.CategoryID));
+
+            AssignedCategoryDataList = allCategories.Select(cat => new AssignedCategoryData
             {
                 CategoryID = cat.ID,
                 Name = cat.CategoryName,
                 Assigned = bookCategories.Contains(cat.ID)
-            });
+            }).ToList();
         }
-    }
-    public void UpdateBookCategories(Suciu_Denisa_Labr2Context context,
-    string[] selectedCategories, Book bookToUpdate)
-    {
-        if (selectedCategories == null)
+
+        public void UpdateBookCategories(
+            Suciu_Denisa_Labr2Context context,
+            string[] selectedCategories,
+            Book bookToUpdate)
         {
-            bookToUpdate.BookCategories = new List<BookCategory>();
-            return;
-        }
-        var selectedCategoriesHS = new HashSet<string>(selectedCategories);
-        var bookCategories = new HashSet<int>
-        (bookToUpdate.BookCategories.Select(c => c.Category.ID));
-        foreach (var cat in context.Category)
-        {
-            if (selectedCategoriesHS.Contains(cat.ID.ToString()))
+            if (selectedCategories == null)
             {
-                if (!bookCategories.Contains(cat.ID))
-                {
-                    bookToUpdate.BookCategories.Add(
-                    new BookCategory
-                    {
-                        BookID = bookToUpdate.ID,
-                        CategoryID = cat.ID
-                    });
-                }
+                bookToUpdate.BookCategories = new List<BookCategory>();
+                return;
             }
-            else
+
+            var selectedCategoriesHS = new HashSet<string>(selectedCategories);
+            var bookCategories = new HashSet<int>
+                (bookToUpdate.BookCategories.Select(c => c.CategoryID));
+
+            foreach (var cat in context.Category)
             {
-                if (bookCategories.Contains(cat.ID))
+                if (selectedCategoriesHS.Contains(cat.ID.ToString()))
                 {
-                    BookCategory bookToRemove
-                    = bookToUpdate
-                    .BookCategories
-                   .SingleOrDefault(i => i.CategoryID == cat.ID);
-                    context.Remove(bookToRemove);
+                    if (!bookCategories.Contains(cat.ID))
+                    {
+                        bookToUpdate.BookCategories.Add(
+                            new BookCategory { BookID = bookToUpdate.ID, CategoryID = cat.ID });
+                    }
+                }
+                else
+                {
+                    if (bookCategories.Contains(cat.ID))
+                    {
+                        BookCategory categoryToRemove = bookToUpdate
+                            .BookCategories
+                            .FirstOrDefault(i => i.CategoryID == cat.ID);
+                        context.Remove(categoryToRemove);
+                    }
                 }
             }
         }
