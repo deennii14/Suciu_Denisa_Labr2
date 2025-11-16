@@ -1,14 +1,16 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Suciu_Denisa_Labr2.Data;
 using Suciu_Denisa_Labr2.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Suciu_Denisa_Labr2.Pages.Books
 {
+    [Authorize(Roles = "Admin")]
     public class EditModel : BookCategoriesPageModel
     {
         private readonly Suciu_Denisa_Labr2Context _context;

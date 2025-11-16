@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Suciu_Denisa_Labr2.Models
 {
@@ -12,12 +13,13 @@ namespace Suciu_Denisa_Labr2.Models
         [StringLength(150, MinimumLength = 3)]
         public string Title { get; set; }
 
-        [Display(Name = "Publishing Date")]
-        [DataType(DataType.Date)]
-        public DateTime PublishingDate { get; set; }
-
-        [Range(1, 300)]
+        [Column(TypeName = "decimal(6, 2)")]
+        [Range(0.01, 500)]
         public decimal Price { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Publishing Date")]
+        public DateTime PublishingDate { get; set; }
 
         public int? PublisherID { get; set; }
         public Publisher? Publisher { get; set; }
